@@ -1,1 +1,0 @@
-Listo! He eliminado **todas** las veterinarias, incluyendo "Veterinaria Central". El sistema está limpio y listo para que des de alta la primera desde cero. Tu usuario superadmin sigue activo (sin oficina asignada).

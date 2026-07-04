@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Veterinaria SaaS</string>
+    <string name="title_activity_main">Veterinaria SaaS</string>
+    <string name="package_name">com.dogbot.veterinaria</string>
+    <string name="custom_url_scheme">com.dogbot.veterinaria</string>
+</resources>
