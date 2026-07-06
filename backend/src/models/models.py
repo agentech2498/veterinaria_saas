@@ -48,6 +48,7 @@ class User(Base):
     org_id = Column(Integer, ForeignKey("organizations.id"))
     is_admin = Column(Boolean, default=False)
     is_superadmin = Column(Boolean, default=False)
+    is_verified = Column(Boolean, default=False)
     
     # Professional Profile (Legacy/Fallback)
     full_name = Column(String, nullable=True) # Nombre Completo Profesional
