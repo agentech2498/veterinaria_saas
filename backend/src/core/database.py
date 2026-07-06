@@ -12,7 +12,12 @@ load_dotenv()
 # Priorizar DATABASE_URL si existe (para Supabase o conexiones directas)
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-if not DATABASE_URL:
+if DATABASE_URL:
+    if DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+asyncpg://", 1)
+    elif DATABASE_URL.startswith("postgresql://") and not DATABASE_URL.startswith("postgresql+asyncpg://"):
+        DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://", 1)
+else:
     # Fallback a variables individuales (para Easypanel o configuración legacy)
     DB_USER = os.getenv("POSTGRES_USER", "postgres")
     DB_PASSWORD = os.getenv("POSTGRES_PASSWORD", "password")
