@@ -9,6 +9,8 @@ class SignupRequest(BaseModel):
     org_name: str
     username: str
     password: str
+    email: Optional[str] = None
+    cuit: Optional[str] = None
 
 class ChangePasswordRequest(BaseModel):
     old_password: Optional[str] = None

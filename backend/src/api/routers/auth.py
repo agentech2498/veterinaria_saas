@@ -6,7 +6,7 @@ from src.schemas.auth import LoginRequest, SignupRequest
 from src.core.database import AsyncSessionLocal
 from src.core.security import verify_password, create_access_token, get_password_hash
 from src.models.models import User, Organization
-from sqlalchemy import select
+from sqlalchemy import select, or_
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +22,7 @@ async def login_handle(payload: LoginRequest):
         res = await session.execute(
             select(User, Organization)
             .outerjoin(Organization, User.org_id == Organization.id)
-            .where(User.username == username)
+            .where(or_(User.username == username, User.email == username, User.cuit == username))
         )
         row = res.first()
         
@@ -62,6 +62,8 @@ async def signup_handle(payload: SignupRequest):
     org_name = payload.org_name
     username = payload.username
     password = payload.password
+    email = payload.email
+    cuit = payload.cuit
     
     if not org_name or not username or not password:
         raise HTTPException(status_code=400, detail="Faltan datos requeridos")
@@ -84,7 +86,14 @@ async def signup_handle(payload: SignupRequest):
         session.add(new_org)
         await session.flush()
 
-        new_user = User(username=username, password_hash=get_password_hash(password), org_id=new_org.id, is_admin=True)
+        new_user = User(
+            username=username, 
+            password_hash=get_password_hash(password), 
+            org_id=new_org.id, 
+            is_admin=True,
+            email=email,
+            cuit=cuit
+        )
         session.add(new_user)
         await session.commit()
         logger.info("Signup exitoso: organización '%s' usuario '%s' creados", org_name, username)
